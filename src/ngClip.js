@@ -6,13 +6,20 @@ angular.module('ngClipboard', []).
   provider('ngClip', function() {
     var self = this;
     this.path = '//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/1.3.2/ZeroClipboard.swf';
+    this.noCache = true;
     return {
       setPath: function(newPath) {
        self.path = newPath;
       },
+
+      setNoCache : function (isCache) {
+        self.noCache = isCache;
+      },
+
       $get: function() {
         return {
-          path: self.path
+          path: self.path,
+          noCache: self.noCache
         };
       }
     };
@@ -22,7 +29,8 @@ angular.module('ngClipboard', []).
       moviePath: ngClip.path,
       trustedDomains: ["*"],
       allowScriptAccess: "always",
-      forceHandCursor: true
+      forceHandCursor: true,
+      useNoCache: ngClip.noCache      
     });
   }]).
   directive('clipCopy', ['ngClip', function (ngClip) {
